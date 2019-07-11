@@ -1,4 +1,4 @@
-import os,platform,sys
+import os,platform,sys,re
 from time import sleep
 
 ChosenPayload = ""
@@ -6,10 +6,12 @@ Payloads = []
 index = 0
 AllowedInputs = []
 
-red = lambda text: '\033[0;31m' + text + '\033[0m'
-green = lambda text: '\033[0;32m' + text + '\033[0m'
-yellow = lambda text: '\033[0;33m' + text + '\033[0m'
-
+#red = lambda text: '\033[0;31m' + text + '\033[0m'
+#green = lambda text: '\033[0;32m' + text + '\033[0m'
+#yellow = lambda text: '\033[0;33m' + text + '\033[0m'
+red = lambda text: text
+green = lambda text: text
+yellow = lambda text: text
 
 def CheckOSandDo(Function):
     System = platform.system()
@@ -52,37 +54,37 @@ def Load():
     print("")
     print("")
     print("                                                             ")
-    sleep(0.1)
+    sleep(0.05)
     print("                                                             ")
-    sleep(0.1)
+    sleep(0.05)
     print("                                             " + yellow("&&&&&&&&&") + "       ")
-    sleep(0.1)
+    sleep(0.05)
     print("                                            " + yellow("&&&&&&") + " " + yellow("(*&&") + "      ")
-    sleep(0.1)
+    sleep(0.05)
     print("                                          " + yellow("(&&&&&&&&") + "  " + yellow("/&&") + "     ")
-    sleep(0.1)
+    sleep(0.05)
     print("                                         " + yellow("*&&&&&&&&&&&&&&") + "     ")
-    sleep(0.1)
+    sleep(0.05)
     print("                                         " + yellow(".&&&&&&&&&&&&&&&&&(") + " ")
-    sleep(0.1)
+    sleep(0.05)
     print("                                           " + yellow(".&&&&&&&&&&&&&&&.") + " ")
-    sleep(0.1)
+    sleep(0.05)
     print("                                              " + yellow("&&&&&&&&&&") + "     ")
-    sleep(0.1)
+    sleep(0.05)
     print("                        "+yellow("&&/")+ " " + yellow("*") + "               "+yellow(".&&&&&&&&&&&&/")+"   ")
-    sleep(0.1)
+    sleep(0.05)
     print("                          " + yellow("&,&") + "  " + yellow(".&..&&&&&&") + red("USB") + yellow("&") + red("Rubber") + yellow("&") + red("Ducky") + yellow("&*") + "  ")
-    sleep(0.1)
+    sleep(0.05)
     print("                           " + yellow("(/(#/&&&") + " " + yellow("/&&&&&") + red("Encoder") + yellow("&") + red("Starter") + yellow("&&") + "  ")
-    sleep(0.1)
+    sleep(0.05)
     print("                              " + yellow("(..,&&&,") + " " + yellow(".&&&") + red("By:") + yellow("&") + red("Mina") + yellow("&") + red("Magdy") + yellow("&") + "   ")
-    sleep(0.1)
+    sleep(0.05)
     print("                             " + yellow("&&") + " " + yellow(".&") + "         " + yellow("&&&&&&&&&&&&&&&") + "   ")
-    sleep(0.1)
+    sleep(0.05)
     print("                            " + yellow("&*") + " " + yellow("*&(") + "          " + yellow("&&&&&&&&&&&&(") + "    ")
-    sleep(0.1)
+    sleep(0.05)
     print("                                                             ")
-    sleep(0.1)
+    sleep(0.05)
     print("                                                             ")
     print(chr(10) + chr(10) + yellow("                         USB Rubber Ducky Encoder Starter") + chr(10) + green("                                 By: Mina Magdy" + chr(10) + "                       https://github.com/minamagdyshehata") + chr(10) + chr(10))
     ShowPayloads()
@@ -95,13 +97,13 @@ def ShowPayloads():
     index = 0
     AllowedInputs = []
     print(green("## Your Payloads are: " + chr(10))) 
-    Files = os.listdir (".")
+    Files = os.listdir ("./payloads")
     for x in range (0,len(Files)):
-        if Files[x].endswith(".txt" )or Files[x].endswith(".txT") or Files[x].endswith(".tXt") or Files[x].endswith(".tXT")  or Files[x].endswith(".Txt")  or Files[x].endswith(".TxT")  or Files[x].endswith(".TXt")  or Files[x].endswith(".TXT"):
+        if Files[x].lower().endswith(".txt" ):
             Payloads.append(Files[x])
     index = len(Payloads)
     if index == 0:
-        print(red("** No Payloads were found!!") + chr(10) + green("*** Place your Payloads in the same Directory then Restart this script..") + chr(10))
+        print(red("** No Payloads were found!!") + chr(10) + green("*** Place your Payloads in the Payloads Directory then Restart this script..") + chr(10))
         ExitScript()
     if index > 0:
         for x in range (1,index + 1):
@@ -129,14 +131,7 @@ def ChoosePayload():
         elif sys.version_info[0] == 2: ChosenPayload = raw_input(chr(10) + green("*** Please choose an option : "))
     ChosenPayload = int(ChosenPayload)    
     if ChosenPayload == index + 1: ExitScript()
-    for x in range(0,len(Payloads[ChosenPayload-1])-4):
-        if (65 <= ord(Payloads[ChosenPayload-1][x]) and ord(Payloads[ChosenPayload-1][x]) <= 90) or (48 <= ord(Payloads[ChosenPayload-1][x]) and ord(Payloads[ChosenPayload-1][x]) <= 57) or (97 <= ord(Payloads[ChosenPayload-1][x]) and ord(Payloads[ChosenPayload-1][x]) <= 122):
-            if RenameRequired == 1:
-                RenameRequired = 1
-            else:
-                RenameRequired = 0
-        else:
-            RenameRequired = 1        
+    RenameRequired = 1 if re.match('^[a-zA-Z_]+.txt', Payloads[ChosenPayload-1]) == None else 0
     if RenameRequired == 0:
         CheckOSandDo("Clear")
         EncodePayload(Payloads[ChosenPayload-1])
@@ -150,19 +145,20 @@ def ExitScript():
     elif sys.version_info[0] == 2: Terminate = raw_input(red(chr(10) + "** Please Press Enter to Exit.."))
     print (chr(10) + green("*** Thank You for using:" + chr(10) + "*** USB Rubber Ducky Encoder Starter") + chr(10))
     print (yellow("      _      _      _      USB       _      _      _"))
-    sleep(0.1)
+    sleep(0.05)
     print (yellow("   __(.)< __(.)> __(.)=   Rubber   =(.)__ <(.)__ >(.)__"))
-    sleep(0.1)
+    sleep(0.05)
     print (yellow("   \___)  \___)  \___)    Ducky!    (___/  (___/  (___/ " + chr(10)))
-    sleep(0.1)
+    sleep(0.05)
     print (chr(10) + red("** Rubber Ducky Encoder Starter script will terminate in 1.5 seconds..") + chr(10) + chr(10))
     sleep(1.5)
     sys.exit()
+    exit()
 
 def EncodePayload(PayloadName):
     global ChosenPayload
     global Payloads
-    if os.path.isfile(PayloadName) == False:
+    if os.path.isfile("./payloads/" + PayloadName) == False:
         print(chr(10) + red("** Payload was not found!!!") + chr(10))
         return
     print (chr(10) + "*** Your choice is " + green(PayloadName) + chr(10) + "*** Your encoded Payload will be created as " + green(PayloadName[:len(PayloadName) - 4] + "inject.bin"))
@@ -181,7 +177,7 @@ def EncodePayload(PayloadName):
             ExitScript()
         else:
             print(chr(10) + green("*** encoder.jar Downloaded Successfully...." + chr(10)))
-    os.system("java -jar encoder.jar -i " + PayloadName + " -o ./DuckyEncodedPayloads/" + PayloadName[:len(PayloadName) - 4] + "inject.bin")
+    os.system("java -jar encoder.jar -i " + "./payloads/" + PayloadName + " -o ./DuckyEncodedPayloads/" + PayloadName[:len(PayloadName) - 4] + "_inject.bin")
     if os.path.isfile("./DuckyEncodedPayloads/" + PayloadName[:len(PayloadName) - 4] + "inject.bin") == True:
         print(green(chr(10) + "*** Done!!..Please check the DuckyEncodedPayloads Directory.." + chr(10)))
     else:
